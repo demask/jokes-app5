@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vicevi</title>
+<link type="text/css" rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<h2>Vicevi</h2>
+			<ul class="navbar">
+				<li class="nav-item !isAuth">
+				<a class="nav-link" href="/register">Registracija</a>
+				</li>
+				<li  class="nav-item !isAuth">
+				<a class="nav-link" href="/login">Prijava</a>
+				</li>
+				<li class="nav-item isAuth">
+				<a class="nav-link" href="/new">Dodaj vic</a>
+				</li>
+				<li class="nav-item hasRole">
+				<a class="nav-link" href="/listUsers">Korisnici</a>
+				</li>
+				<form class="form-logout"  method="post">
+					<button class="btn-logout" type="submit">Odjava</button>
+				</form>
+			</ul>
+		</div>
+	</div>
+	<div id="container">
+		<div id="content">
+			<table>
+				<tr class="table-nav">
+					<th>#</th>
+					<th>Kategorija</th>
+					<th>Vic</th>
+					<th>Likes</th>
+					<th>Dislikes</th>
+					<th>Razlika</th>
+					<th>FeedBack</th>
+					<th class="hasRole">Obriši vic</th>
+				</tr>
+				<tr id="jokes-list" >
+					<td id="jokes-td-page"></td>
+					<td id="jokes-td-name"></td>
+					<td class="td-content"></td>
+					<td id="jokes-td-likes"></td>
+					<td id="jokes-td-dislikes"></td>
+					<td id="jokes-td-difference" ></td>
+					<td><a id="jokes-a-likejoke">Like</a>
+						| 
+						<a id="jokes-a-dislikejoke">Dislike</a>
+					</td>
+					<td class="hasRole">
+					<a id="jokes-a-deletejoke">Obriši</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<ul class="page-num-lst">
+		<li class="pageNumbers" >
+		<a id="joke-pages" ></a> 
+		<a id="joke-pages-cond1"></a> 
+		<a id="joke-pages-cond2"></a>
+		</li>
+	</ul>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

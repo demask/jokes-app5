@@ -1,0 +1,11 @@
+<thlogic>
+
+	<attr sel=".nav-link" th:href="@{/}" />
+	
+	<attr sel=".login-err" th:if="${param.error}" />
+	
+	<attr sel="#form-login" th:action="@{/login}" />
+
+	
+	
+</thlogic>

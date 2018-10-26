@@ -1,0 +1,55 @@
+<thlogic>
+
+	<attr sel=".!isAuth" sec:authorize="!isAuthenticated()" />
+
+	<attr sel=".isAuth" sec:authorize="isAuthenticated()" />
+
+	<attr sel=".hasRole" sec:authorize="hasRole('ROLE_ADMIN')" />
+
+	<attr sel=".form-logout" th:action="@{logout}"
+		sec:authorize="isAuthenticated()" />
+
+	<attr sel="#jokes-list" th:each="tempJoke, i : ${jokes}" />
+
+	<attr sel="#jokes-td-page"
+		th:text="${((currentPage) * 10) +  i.index +1}" />
+
+	<attr sel="#jokes-td-name"
+		th:text="${tempJoke.category.getName()}" />
+
+	<attr sel=".td-content" th:text="${tempJoke.content}" />
+
+	<attr sel="#jokes-td-likes" th:text="${tempJoke.likes}" />
+
+	<attr sel="#jokes-td-dislikes" th:text="${tempJoke.dislikes}" />
+
+	<attr sel="#jokes-td-difference"
+		th:text="${tempJoke.getDifference()}" />
+
+	<attr sel="#jokes-a-likejoke"
+		th:href="@{likeJoke/(jokeId=${tempJoke.id}, page=${currentPage})}" />
+
+	<attr sel="#jokes-a-dislikejoke"
+		th:href="@{dislikeJoke/(jokeId=${tempJoke.id}, page=${currentPage})}" />
+
+	<attr sel="#jokes-a-deletejoke"
+		th:href="@{deleteJoke/(jokeId=${tempJoke.id}, page=${currentPage})}" />
+
+	<attr sel=".pageNumbers"
+		th:each="i : ${#numbers.sequence(0, jokes.totalPages-1) }" />
+
+	<attr sel="#joke-pages" th:href="@{/(page=${i})}" th:text="${i}"
+		th:classappend="${currentPage}==${i}?'active':''" />
+
+	<attr sel="#joke-pages-cond1"
+		th:if="${i == jokes.totalPages-1 and currentPage != i}"
+		th:href="@{/(page=${currentPage+1})}" th:text="Sljedeća" />
+
+	<attr sel="#joke-pages-cond2"
+		th:if="${i == jokes.totalPages-1 and currentPage == i}"
+		th:href="@{/(page=${currentPage})}" th:text="Sljedeća" />
+
+
+
+
+</thlogic>

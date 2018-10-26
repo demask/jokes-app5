@@ -1,0 +1,7 @@
+<thlogic>
+
+	<attr sel=".nav-link" th:href="@{/login}" />
+	
+	<attr sel=".!isAuth" sec:authorize="!isAuthenticated()" />	
+	
+</thlogic>

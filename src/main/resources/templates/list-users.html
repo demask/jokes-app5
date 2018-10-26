@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Korisnici</title>
+<link type="text/css" rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<h2>Korisnici</h2>
+			<ul class="navbar">
+				<li class="nav-item isAuth">
+				<a class="nav-link" >Natrag na Viceve</a>
+				</li>
+				<form class="form-logout"  method="post">
+					<button class="btn-logout" type="submit">Odjava</button>
+				</form>
+			</ul>
+		</div>
+	</div>
+	<div id="container">
+		<div id="content">
+			<table>
+				<tr>
+					<th>Email</th>
+					<th>Ime</th>
+					<th>Status korisnika</th>
+					<th>Promijeni status</th>
+					<th>Obriši korisnika</th>
+				</tr>
+				<tr id="users-list">
+					<td id="users-td-email" ></td>
+					<td id="users-td-name" ></td>
+					<td >
+						<div id="users-td-roles">
+							<div id="users-td-roles-name"></div>
+						</div>
+					</td>
+					<td>
+						<form id="users-form-change" method="post">
+							<button class="btn-userdlt" name="action" type="submit">Promijeni status</button>
+						</form>
+					</td>
+					<td>
+						<form id="users-form-delete" method="post">
+							<button class="btn-userdlt" name="action" type="submit">Obriši</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div style=""></div>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,19 @@
+<thlogic>
+
+	<attr sel=".nav-link" th:href="@{/}" />
+	
+	<attr sel="#form-new" th:action="@{/saveJoke}" th:object="${joke}" />
+	
+	<attr sel="#textarea" th:field="*{content}" />
+	
+	<attr sel=".content" th:if="${#fields.hasErrors('content')}" th:errors="*{content}" />
+	
+	<attr sel="#category-txt" th:field="*{category}" />
+	
+	<attr sel=".category" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"/>
+	
+	
+
+	
+	
+</thlogic>

@@ -1,0 +1,7 @@
+<thlogic>
+
+	<attr sel=".form-confirm"
+	th:action="@{/confirmAction}"/>
+
+	
+</thlogic>

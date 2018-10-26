@@ -1,0 +1,23 @@
+<thlogic>
+
+	<attr sel=".isAuth" sec:authorize="isAuthenticated()" />
+
+	<attr sel=".nav-link" th:href="@{/}" />
+	
+	<attr sel=".form-logout" th:action="@{logout}" sec:authorize="isAuthenticated()" />
+	
+	<attr sel="#users-list"  th:each="tempUser : ${users}"/>
+	
+	<attr sel="#users-td-email"  th:text="${tempUser.email}"/>
+	
+	<attr sel="#users-td-name"  th:text="${tempUser.name}"/>
+	
+	<attr sel="#users-td-roles"  th:each="tempRoles : ${tempUser.roles}"/>
+	
+	<attr sel="#users-td-roles-name"  th:text="${tempRoles.name}"/>
+	
+	<attr sel="#users-form-change"  th:action="@{changeStatus/(userEmail=${tempUser.email})}"/>
+	
+	<attr sel="#users-form-delete"  th:action="@{deleteUser/(userEmail=${tempUser.email})}"/>
+	
+</thlogic>

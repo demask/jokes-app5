@@ -1,0 +1,25 @@
+<thlogic>
+
+	<attr sel=".nav-link" th:href="@{/}" />
+	
+	<attr sel=".login-err" th:if="${exist}"/>
+	
+	<attr sel="#form-register" th:action="@{/register}" th:object="${user}"/>
+	
+	<attr sel="#email" th:field="*{email}"/>
+	
+	<attr sel=".email-err" th:if="${#fields.hasErrors('email')}"  th:errors="*{email}" />
+	
+	<attr sel="#password" th:field="*{password}"/>
+	
+	<attr sel=".pass-err" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"/>
+	
+	<attr sel="#name" th:field="*{name}"/>
+	
+	<attr sel=".name-err" th:if="${#fields.hasErrors('name')}"  th:errors="*{name}"/>
+	
+	
+
+	
+	
+</thlogic>

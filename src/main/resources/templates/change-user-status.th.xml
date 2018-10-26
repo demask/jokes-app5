@@ -1,0 +1,30 @@
+<thlogic>
+
+	<attr sel=".nav-link"
+	th:href="@{/listUsers}"/>
+
+	<attr sel=".form-chStat"
+	th:action="@{/confirmChangeStatus}" th:object="${user}" />
+
+	<attr sel="#form-chStat-email"
+	th:field="*{email}"/>
+
+	<attr sel="#form-chStat-name"
+	th:field="*{name}"/>
+	
+	<attr sel=".form-chStat-td"
+	th:each="tempRoles : ${user.roles}"/>
+	
+	<attr sel=".form-chStat-td-text"
+	th:text="${tempRoles.name}"/>
+	
+	<attr sel=".roles-tr"
+	th:each="i : ${curRoles}"/>
+	
+	<attr sel=".roles-input"
+	th:field="*{roles}" th:value="${i.name}"/>
+	
+	<attr sel=".roles-label"
+	th:text="${i.name}"/>
+	
+</thlogic>

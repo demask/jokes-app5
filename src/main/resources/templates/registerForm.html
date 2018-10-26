@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Registracija</title>
+<link type="text/css" rel="stylesheet" href="/css/style.css" />
+
+<link type="text/css" rel="stylesheet"
+	href="/css/add-customer-style.css" />
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<h2>Registracija</h2>
+			<ul class="navbar">
+				<li class="nav-item">
+				<a class="nav-link">Natrag na Viceve</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="login-err">
+		<p>Navedeni email je već iskorišten</p>
+	</div>
+	<form id="form-register" action="register" method="post">
+		<table>
+			<tbody>
+				<tr>
+					<td><label>Email:</label></td>
+					<td><input type="text" id="email" /></td>
+					<td>
+						<p class="error email-err">Error</p>
+					</td>
+				</tr>
+				<tr>
+					<td><label>Lozinka:</label></td>
+					<td><input type="password"  id="password" /></td>
+					<td>
+						<p class="error pass-err">Error</p>
+					</td>
+				</tr>
+				<tr>
+					<td><label>Ime:</label></td>
+					<td><input type="text" id="name"/></td>
+					<td>
+						<p class="error name-err">Error</p>
+					</td>
+				</tr>
+				<tr>
+					<td><label></label></td>
+					<td><input type="submit" value="Dodaj" class="save" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+	<div style=""></div>
+	<p></p>
+</body>
+</html>
