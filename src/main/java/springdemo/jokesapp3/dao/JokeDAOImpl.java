@@ -32,7 +32,7 @@ public class JokeDAOImpl implements JokeDao {
 
 	@Override
 	public Page<Joke> getJokes(Pageable pageable) {
-		log.info("in jokesDAOimpl getJokes()");
+		
 		TypedQuery<Joke> theJokequery = entityManger.createQuery("from Joke order by ((likes-dislikes), likes) desc", Joke.class);
 		
 		List<Joke> jokes = theJokequery.getResultList();

@@ -55,7 +55,6 @@ public class JokeController {
 	
 	@GetMapping("/")
 	public String listJokes(Model theModel,  @RequestParam(defaultValue="0") int page) {
-		log.info("in listJokes method");
 		Page<Joke> theJokes = jokeService.getJokes(PageRequest.of(page, 10));
 		theModel.addAttribute("jokes", theJokes);
 		theModel.addAttribute("currentPage", page);
@@ -64,21 +63,18 @@ public class JokeController {
 
 	@GetMapping("/likeJoke")
 	public String likeJoke(Model model, @RequestParam("jokeId") int jokeId, @RequestParam int page) {
-		log.info("jokeId = {}", jokeId);
 		jokeService.likeJoke(jokeId);
 		return "redirect:/?page="+page;
 	}
 
 	@GetMapping("/dislikeJoke")
 	public String dislikeJoke(@RequestParam("jokeId") int jokeId,  @RequestParam int page) {
-		log.info("jokeId = {}", jokeId);
 		jokeService.dislikeJoke(jokeId);
 		return "redirect:/?page="+page;
 	}
 
 	@GetMapping("/new")
 	public String showJokeForm(Model theModel) {
-		log.info("in showJokeForm");
 		jokeHelp.setClear();
 		theModel.addAttribute("joke", jokeHelp);
 		return "new";

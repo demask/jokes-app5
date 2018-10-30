@@ -35,14 +35,12 @@ public class RegisterController {
 	
 	@GetMapping("/register")
 	public String registerForm(Model model) {
-		log.info("in RegisterController registerForm(Model model)");
 		model.addAttribute("user", new User());
 		return "/registerForm";
 	}
 		
 	@PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
-		log.info("in RegisterController registerUser()");
 		if(bindingResult.hasErrors()) {
 			return "/registerForm";
 		}

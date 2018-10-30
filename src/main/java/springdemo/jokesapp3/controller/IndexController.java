@@ -10,7 +10,6 @@ public class IndexController {
 	
 	@GetMapping("/login") 
 	public String showLoginForm() {
-		log.info("in IndexController showLoginForm()");
 		return "loginForm";  
 	}
 	

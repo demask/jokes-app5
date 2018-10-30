@@ -30,7 +30,7 @@ public class UserService {
 		roles.add(userRole);
 		user.setRoles(roles);
 		userRepository.save(user);
-		log.info("in createUser()");
+		
 
 	}
 
