@@ -41,6 +41,7 @@ public class RegisterController {
 		
 	@PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
+		
 		if(bindingResult.hasErrors()) {
 			return "/registerForm";
 		}

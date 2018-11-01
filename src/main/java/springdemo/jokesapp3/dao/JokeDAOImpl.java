@@ -28,12 +28,12 @@ import springdemo.jokesapp3.entity.Joke;
 public class JokeDAOImpl implements JokeDao {
 
 	@PersistenceContext
-	private EntityManager entityManger;
+	private EntityManager entityManager;
 
 	@Override
 	public Page<Joke> getJokes(Pageable pageable) {
 		
-		TypedQuery<Joke> theJokequery = entityManger.createQuery("from Joke order by ((likes-dislikes), likes) desc", Joke.class);
+		TypedQuery<Joke> theJokequery = entityManager.createQuery("from Joke order by ((likes-dislikes), likes) desc", Joke.class);
 		
 		List<Joke> jokes = theJokequery.getResultList();
 		List<Joke> jokes2; 
@@ -53,7 +53,7 @@ public class JokeDAOImpl implements JokeDao {
 
 	@Override
 	public void likeJoke(int jokeId) {
-		Joke joke = entityManger.getReference(Joke.class, jokeId);
+		Joke joke = entityManager.getReference(Joke.class, jokeId);
 		int likes = joke.getLikes();
 		likes++;
 		joke.setLikes(likes);
@@ -61,7 +61,7 @@ public class JokeDAOImpl implements JokeDao {
 
 	@Override
 	public void dislikeJoke(int jokeId) {
-		Joke joke = entityManger.getReference(Joke.class, jokeId);
+		Joke joke = entityManager.getReference(Joke.class, jokeId);
 		int dislikes = joke.getDislikes();
 		dislikes++;
 		joke.setDislikes(dislikes);
@@ -70,9 +70,9 @@ public class JokeDAOImpl implements JokeDao {
 
 	@Override
 	public void saveJoke(Joke theJoke) {
-		TypedQuery<Category> theQuery = entityManger.createQuery("from Category where lower(name) like :theName",
+		TypedQuery<Category> theQuery = entityManager.
+				createQuery("from Category where lower(name) like '%" + theJoke.getCategory().getName() + "%'",
 				Category.class);
-		theQuery.setParameter("theName", "%" + theJoke.getCategory().getName() + "%");
 
 		List<Category> listcategory = theQuery.getResultList();
 		Category category;
@@ -81,9 +81,9 @@ public class JokeDAOImpl implements JokeDao {
 		} else {
 			category = new Category();
 			category.setName(theJoke.getCategory().getName());
-			entityManger.persist(category);
+			entityManager.persist(category);
 		}
 		category.addJoke(theJoke);
-		entityManger.persist(theJoke);
+		entityManager.persist(theJoke);
 	}
 }

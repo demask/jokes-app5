@@ -62,7 +62,7 @@ public class JokeController {
 	}
 
 	@GetMapping("/likeJoke")
-	public String likeJoke(Model model, @RequestParam("jokeId") int jokeId, @RequestParam int page) {
+	public String likeJoke(@RequestParam("jokeId") int jokeId, @RequestParam int page) {
 		jokeService.likeJoke(jokeId);
 		return "redirect:/?page="+page;
 	}

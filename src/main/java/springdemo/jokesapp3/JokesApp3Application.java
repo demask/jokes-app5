@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import lombok.extern.java.Log;
 import springdemo.jokesapp3.entity.User;
 import springdemo.jokesapp3.service.UserService;
 
@@ -12,7 +13,7 @@ import springdemo.jokesapp3.service.UserService;
 public class JokesApp3Application implements CommandLineRunner {
 
 	@Autowired
-	 private UserService userService;
+	private UserService userService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(JokesApp3Application.class, args);
@@ -28,5 +29,8 @@ public class JokesApp3Application implements CommandLineRunner {
     		  User newUser = new User("user@mail.com", "User", "123456");
     		  userService.createUser(newUser); 
     	  }
+		  
+		  
+		  
 	}
 }
