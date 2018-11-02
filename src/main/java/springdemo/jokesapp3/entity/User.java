@@ -32,7 +32,11 @@ public class User {
 	@NotEmpty(message="polje lozinka mora biti popunjeno")
 	private String password;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = {CascadeType.PERSIST,
+			CascadeType.DETACH,
+			CascadeType.MERGE,
+			CascadeType.REFRESH
+	})
 	@JoinTable(name = "USER_ROLES", joinColumns={
 			@JoinColumn(name = "USER_EMAIL", referencedColumnName = "email") }, inverseJoinColumns = {
 					@JoinColumn(name = "ROLE_NAME", referencedColumnName = "name") })

@@ -55,7 +55,6 @@ public class UserController {
 		
 		if (action.equals("yes")) {
 			User user = userService.findOne(userEmail);
-			user.setRoles(null);
 			userService.delete(userEmail);
 		}
 		return "redirect:/listUsers";

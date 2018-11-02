@@ -11,8 +11,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import springdemo.jokesapp3.dao.JokeDao;
@@ -24,16 +26,11 @@ import springdemo.jokesapp3.service.UserService;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class JokesAppTests {
+@Transactional
+public class UserServiceIT {
 
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private JokeService jokeService;
-	
-	@Autowired
-	private JokeDao jokeDao;
 
 	@Before
 	public void initDb() {
@@ -42,13 +39,11 @@ public class JokesAppTests {
 			userService.createUser(newUser);
 		}
 		{
-			User newUser = new User("testAdmin@mail.com", "testAdmin", "123456");
-			userService.createUser(newUser);
+			User newAdmin = new User("testAdmin@mail.com", "testAdmin", "123456");
+			userService.createAdmin(newAdmin);
 		}	
 
-	}
-	
-	
+	}	
 
 	@Test
 	public void testUser() {
@@ -60,8 +55,10 @@ public class JokesAppTests {
 	
 	@Test
 	public void deleteUsers() {
-		
+		User user = userService.findOne("testUser@mail.com");
 		userService.delete("testUser@mail.com");
+		
+		User admin = userService.findOne("testAdmin@mail.com");
 		userService.delete("testAdmin@mail.com");
 
 		assertFalse(userService.isUserPresent("testAdmin@mail.com"));
