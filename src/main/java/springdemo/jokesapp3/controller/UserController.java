@@ -36,15 +36,17 @@ public class UserController {
 	private RoleService roleService;
 
 	@GetMapping("/listUsers")
-	public String listUsers(Model model) {
-		List<User> theUsers = userService.findAll();
-		model.addAttribute("users", theUsers);
+	public String listUsers(Model model,   @RequestParam(defaultValue="0") int page) {
+		Page<User> users = userService.findAll(PageRequest.of(page, 10));
+		model.addAttribute("users", users);
+		model.addAttribute("currentPage", page);
 		return "list-users";
 	}
 
-	@PostMapping("/deleteUser")
-	public String deleteUser(Model model, @RequestParam("userEmail") String userEmail, HttpSession session) {
+	@PostMapping("/listUsers/deleteUser")
+	public String deleteUser(Model model, @RequestParam("userEmail") String userEmail, @RequestParam int page, HttpSession session) {
 		session.setAttribute("userEmail", userEmail);
+		session.setAttribute("page", page);
 		return "confirmation-dialog";
 
 	}
@@ -57,29 +59,31 @@ public class UserController {
 			User user = userService.findOne(userEmail);
 			userService.delete(userEmail);
 		}
-		return "redirect:/listUsers";
+		return "redirect:/listUsers?page="+session.getAttribute("page");
 
 	}
 
-	@PostMapping("/changeStatus")
-	public String changeUserStatus(Model model, @RequestParam("userEmail") String userEmail) {
+	@PostMapping("/listUsers/changeStatus")
+	public String changeUserStatus(Model model, @RequestParam("userEmail") String userEmail, @RequestParam int page, HttpSession session) {
 		User user = userService.findOne(userEmail);
 		List<Role> roles = roleService.findAll();
 		model.addAttribute("user", user);
 		model.addAttribute("curRoles", roles);
+		session.setAttribute("page", page);
+		model.addAttribute("currentPage", page);
 		return "/change-user-status";
 
 	}
 
 	@PostMapping("/confirmChangeStatus")
-	public String confirmChangeStatus(Model model, @ModelAttribute User user) {
+	public String confirmChangeStatus(Model model, @ModelAttribute User user, HttpSession session) {
 		User realUser = userService.findOne(user.getEmail());
 		if (user.getRoles().size() > 0) {
 			realUser.setRoles(null);
 			realUser.setRoles(user.getRoles());
 		}
-		userService.save(realUser);
-		return "redirect:/listUsers";
+		userService.save(realUser); 
+		return "redirect:/listUsers?page="+session.getAttribute("page");
 
 	}
 

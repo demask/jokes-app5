@@ -1,7 +1,7 @@
 <thlogic>
 
 	<attr sel=".nav-link"
-	th:href="@{/listUsers}"/>
+	th:href="@{/listUsers(page=${currentPage})}"/>
 
 	<attr sel=".form-chStat"
 	th:action="@{/confirmChangeStatus}" th:object="${user}" />

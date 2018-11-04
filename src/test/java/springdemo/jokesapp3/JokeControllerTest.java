@@ -10,6 +10,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -138,12 +140,12 @@ public class JokeControllerTest {
 	public void saveJokeTest() throws Exception {
 
 		BindingResult bindingResult = new BeanPropertyBindingResult(jokeHelp, "error");
-		String viewName = jokeController.saveJoke(jokeHelp, bindingResult, model);
+		String viewName = jokeController.saveJoke(jokeHelp, bindingResult);
 		assertEquals("redirect:/", viewName);	
 		
 		BindingResult bindingResult2 = new BeanPropertyBindingResult(jokeHelp, "error");
 		bindingResult2.addError(new ObjectError("test error", "error"));
-		String viewName2 = jokeController.saveJoke(jokeHelp, bindingResult2, model);
+		String viewName2 = jokeController.saveJoke(jokeHelp, bindingResult2);
 		assertEquals("new", viewName2);
 	}
 	

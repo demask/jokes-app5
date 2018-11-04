@@ -17,6 +17,6 @@ public interface JokeDao {
 
 	public void dislikeJoke(int jokeId);
 
-	public void saveJoke(Joke theJoke);
+	public void saveJoke(Joke joke);
 
 }

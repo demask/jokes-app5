@@ -54,10 +54,10 @@ public class JokeController {
 	}	
 	
 	@GetMapping("/")
-	public String listJokes(Model theModel,  @RequestParam(defaultValue="0") int page) {
-		Page<Joke> theJokes = jokeService.getJokes(PageRequest.of(page, 10));
-		theModel.addAttribute("jokes", theJokes);
-		theModel.addAttribute("currentPage", page);
+	public String listJokes(Model model,  @RequestParam(defaultValue="0") int page) {
+		Page<Joke> jokes = jokeService.getJokes(PageRequest.of(page, 10));
+		model.addAttribute("jokes", jokes);
+		model.addAttribute("currentPage", page);
 		return "list-jokes";
 	}
 
@@ -74,21 +74,21 @@ public class JokeController {
 	}
 
 	@GetMapping("/new")
-	public String showJokeForm(Model theModel) {
+	public String showJokeForm(Model model) {
 		jokeHelp.setClear();
-		theModel.addAttribute("joke", jokeHelp);
+		model.addAttribute("joke", jokeHelp);
 		return "new";
 	}
 
 	@PostMapping("/saveJoke")
-	public String saveJoke(@Valid @ModelAttribute("joke") JokeHelp theJokeHelp, 
-			BindingResult theBindingResult, Model theModel) {
+	public String saveJoke(@Valid @ModelAttribute("joke") JokeHelp jokeHelp, 
+			BindingResult bindingResult) {
 		
-		if (theBindingResult.hasErrors()) {
+		if (bindingResult.hasErrors()) {
 			return "new";
 		} else {
-			Joke joke = new Joke(theJokeHelp.getContent());
-			joke.setCategory(new Category(theJokeHelp.getCategory()));
+			Joke joke = new Joke(jokeHelp.getContent());
+			joke.setCategory(new Category(jokeHelp.getCategory()));
 			jokeService.saveJoke(joke);
 			return "redirect:/";
 		}

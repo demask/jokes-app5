@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import javax.servlet.http.HttpSession;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,6 +61,9 @@ public class UserControllerTest {
 	
 	@Mock
 	Model model;
+	
+	@Mock
+	HttpSession httpSession;
 
 	
 	@Test
@@ -70,7 +73,7 @@ public class UserControllerTest {
 		users.add(user);
 		
 		Mockito.when(userService.findAll()).thenReturn(users);
-		String viewName = userController.listUsers(model);
+		String viewName = userController.listUsers(model, 0);
 		assertEquals("list-users", viewName);
 		
 		ArgumentCaptor<List<User>> argumentCaptor = ArgumentCaptor.forClass(List.class);
@@ -92,7 +95,7 @@ public class UserControllerTest {
 		roles.add(role);
 		
 		Mockito.when(roleService.findAll()).thenReturn(roles);
-		String viewName = userController.changeUserStatus(model, "email");
+		String viewName = userController.changeUserStatus(model, "email", 0, httpSession);
 		assertEquals("/change-user-status", viewName);
 		
 		ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);

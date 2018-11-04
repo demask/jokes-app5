@@ -4,7 +4,7 @@
 
 	<attr sel=".nav-link" th:href="@{/}" />
 	
-	<attr sel=".form-logout" th:action="@{logout}" sec:authorize="isAuthenticated()" />
+	<attr sel=".form-logout" th:action="@{/logout}" sec:authorize="isAuthenticated()" />
 	
 	<attr sel="#users-list"  th:each="tempUser : ${users}"/>
 	
@@ -16,8 +16,21 @@
 	
 	<attr sel="#users-td-roles-name"  th:text="${tempRoles.name}"/>
 	
-	<attr sel="#users-form-change"  th:action="@{changeStatus/(userEmail=${tempUser.email})}"/>
+	<attr sel="#users-form-change"  th:action="@{/listUsers/changeStatus/(userEmail=${tempUser.email}, page=${currentPage})}"/>
 	
-	<attr sel="#users-form-delete"  th:action="@{deleteUser/(userEmail=${tempUser.email})}"/>
+	<attr sel="#users-form-delete"  th:action="@{/listUsers/deleteUser/(userEmail=${tempUser.email}, page=${currentPage})}"/>
 	
+	<attr sel=".pageNumbers"
+		th:each="i : ${#numbers.sequence(0, users.totalPages-1) }" />
+
+	<attr sel="#joke-pages" th:href="@{/listUsers/(page=${i})}" th:text="${i}"
+		th:classappend="${currentPage}==${i}?'active':''" />
+
+	<attr sel="#joke-pages-cond1"
+		th:if="${i == users.totalPages-1 and currentPage != i}"
+		th:href="@{/listUsers/(page=${currentPage+1})}" th:text="Sljedeća" />
+
+	<attr sel="#joke-pages-cond2"
+		th:if="${i == users.totalPages-1 and currentPage == i}"
+		th:href="@{/listUsers/(page=${currentPage})}" th:text="Sljedeća" />
 </thlogic>

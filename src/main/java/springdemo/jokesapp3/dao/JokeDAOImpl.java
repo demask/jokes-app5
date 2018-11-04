@@ -33,9 +33,9 @@ public class JokeDAOImpl implements JokeDao {
 	@Override
 	public Page<Joke> getJokes(Pageable pageable) {
 		
-		TypedQuery<Joke> theJokequery = entityManager.createQuery("from Joke order by ((likes-dislikes), likes) desc", Joke.class);
+		TypedQuery<Joke> jokequery = entityManager.createQuery("from Joke order by ((likes-dislikes), likes) desc", Joke.class);
 		
-		List<Joke> jokes = theJokequery.getResultList();
+		List<Joke> jokes = jokequery.getResultList();
 		List<Joke> jokes2; 
 		if(((pageable.getPageNumber()+1)*pageable.getPageSize()) >= jokes.size()) {
 			
@@ -69,21 +69,21 @@ public class JokeDAOImpl implements JokeDao {
 	}
 
 	@Override
-	public void saveJoke(Joke theJoke) {
-		TypedQuery<Category> theQuery = entityManager.
-				createQuery("from Category where lower(name) like '%" + theJoke.getCategory().getName() + "%'",
+	public void saveJoke(Joke joke) {
+		TypedQuery<Category> query = entityManager.
+				createQuery("from Category where lower(name) like '%" + joke.getCategory().getName() + "%'",
 				Category.class);
 
-		List<Category> listcategory = theQuery.getResultList();
+		List<Category> listcategory = query.getResultList();
 		Category category;
 		if (listcategory.size() != 0) {
 			category = listcategory.get(0);
 		} else {
 			category = new Category();
-			category.setName(theJoke.getCategory().getName());
+			category.setName(joke.getCategory().getName());
 			entityManager.persist(category);
 		}
-		category.addJoke(theJoke);
-		entityManager.persist(theJoke);
+		category.addJoke(joke);
+		entityManager.persist(joke);
 	}
 }
