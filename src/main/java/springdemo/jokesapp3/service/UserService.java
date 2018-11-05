@@ -6,11 +6,15 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import springdemo.jokesapp3.entity.Joke;
 import springdemo.jokesapp3.entity.Role;
 import springdemo.jokesapp3.entity.User;
 import springdemo.jokesapp3.repositories.UserRepository;
@@ -68,12 +72,35 @@ public class UserService {
 
 		userRepository.save(user);
 	}
+	
+	public void saveChangedData(User user) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User realUser = findOne(authentication.getName());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		user.setRoles(realUser.getRoles());
+		user.setPassword(encoder.encode(user.getPassword()));
+		userRepository.save(user);
+	}
 
 	
 //	trebalo bi biti implementirano u search baru za korisnike
-	public List<User> findByName(String name) {
-
-		return userRepository.findByNameLike("%" + name + "%");
+	public Page<User> findByName(String name, Pageable pageable) {
+		List<User> users = userRepository.findByNameLikeIgnoreCase("%" + name + "%");
+		
+		List<User> users2; 
+		if(((pageable.getPageNumber()+1)*pageable.getPageSize()) >= users.size()) {
+			
+			users2 = users.subList((pageable.getPageNumber()*pageable.getPageSize()), users.size());
+		}
+		else {	
+			users2 = users.subList(pageable.getPageNumber()*pageable.getPageSize(), 
+					 ((pageable.getPageNumber()+1)*pageable.getPageSize()));
+		}
+		
+		Page<User> page = new PageImpl<User>(users2, pageable, users.size());
+			
+		return page;
+		
 	}
 
 	public boolean isUserPresent(String email) {

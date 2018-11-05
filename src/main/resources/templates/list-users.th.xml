@@ -23,14 +23,16 @@
 	<attr sel=".pageNumbers"
 		th:each="i : ${#numbers.sequence(0, users.totalPages-1) }" />
 
-	<attr sel="#joke-pages" th:href="@{/listUsers/(page=${i})}" th:text="${i}"
+	<attr sel="#joke-pages" th:if="${users.totalPages > 0}" th:href="@{/listUsers/(page=${i}, findName=${findName})}" th:text="${i}"
 		th:classappend="${currentPage}==${i}?'active':''" />
 
 	<attr sel="#joke-pages-cond1"
-		th:if="${i == users.totalPages-1 and currentPage != i}"
-		th:href="@{/listUsers/(page=${currentPage+1})}" th:text="Sljedeća" />
+		th:if="${i == users.totalPages-1 and currentPage != i and users.totalPages > 0}"
+		th:href="@{/listUsers/(page=${currentPage+1}, findName=${findName})}" th:text="Sljedeća" />
 
 	<attr sel="#joke-pages-cond2"
-		th:if="${i == users.totalPages-1 and currentPage == i}"
-		th:href="@{/listUsers/(page=${currentPage})}" th:text="Sljedeća" />
+		th:if="${i == users.totalPages-1 and currentPage == i and users.totalPages > 0}"
+		th:href="@{/listUsers/(page=${currentPage}, findName=${findName})}" th:text="Sljedeća" />
+		
+	  <attr sel=".form-control"  th:value="${findName}"/>
 </thlogic>

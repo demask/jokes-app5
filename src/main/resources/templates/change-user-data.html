@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Promjena korisničkih podataka</title>
+<link type="text/css" rel="stylesheet" href="/css/style.css" />
+<link type="text/css" rel="stylesheet"
+	href="/css/add-customer-style.css" />
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<h2>Promjena korisničkih podataka</h2>
+			 
+			<ul class="navbar">
+				<li class="nav-item"><a class="nav-link" >Natrag na Viceve</a></li>
+			</ul>
+			
+		</div>
+	</div>
+	  
+	<form class="form-chStat" method="post">
+		<table>
+			<tbody>
+				<tr>
+					<td><label>Email:</label></td>
+					<td><input id="form-chStat-email" type="text" readonly /></td>
+				</tr>
+				<tr>
+					<td><label>Ime:</label></td>
+					<td><input id="form-chStat-name" type="text"  /></td>
+					<td>
+						<p class="error name-err">Error</p>
+					</td>
+				</tr>
+				<tr>
+					<td><label>Lozinka:</label></td>
+					<td><input id="form-chStat-password" type="password"  /></td>
+					<td>
+						<p class="error pass-err">Error</p>
+					</td>
+				</tr>
+				
+				<tr>
+					<td><label></label></td>
+					<td><input type="submit" value="Promijeni" class="save" /></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+
+	<div style=""></div>
+	<p></p>
+
+</body>
+</html>

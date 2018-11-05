@@ -230,3 +230,31 @@ td a:hover {
 .btn-confirm:hover{
 	color:  red;
 }
+
+.btn-search{
+	color: white;
+	width: 130px; 
+	height: 30px;
+	background: #09c332;
+	border: 1px solid #666; 
+	border-radius: 5px; 
+	font-size: 16px;
+	
+}
+
+.btn-search:hover{
+	color: #09c332;
+	background: white;
+}
+
+.form-inline{
+	padding: 20px 0px 0px 32px; 
+}
+
+.form-control{
+	width: 150px; 
+	height: 25px;
+	font-size: 16px;
+	border: 1px solid #666; 
+	border-radius: 5px; 
+}

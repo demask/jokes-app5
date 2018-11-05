@@ -5,12 +5,17 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.sound.midi.MidiDevice.Info;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,11 +41,15 @@ public class UserController {
 	private RoleService roleService;
 
 	@GetMapping("/listUsers")
-	public String listUsers(Model model,   @RequestParam(defaultValue="0") int page) {
-		Page<User> users = userService.findAll(PageRequest.of(page, 10));
-		model.addAttribute("users", users);
-		model.addAttribute("currentPage", page);
-		return "list-users";
+	public String listUsers(Model model,   @RequestParam(defaultValue="0") int page, @RequestParam(defaultValue="")  String findName) {
+
+		Page<User> users = userService.findByName(findName, PageRequest.of(page, 10));
+			model.addAttribute("users", users);
+			model.addAttribute("currentPage", page);
+			model.addAttribute("findName", findName);
+			return "list-users";
+
+		
 	}
 
 	@PostMapping("/listUsers/deleteUser")
@@ -84,6 +93,28 @@ public class UserController {
 		}
 		userService.save(realUser); 
 		return "redirect:/listUsers?page="+session.getAttribute("page");
+
+	}
+	
+	@GetMapping("/userData")
+	public String changeUserData(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User realUser = userService.findOne(authentication.getName());
+		
+		model.addAttribute("user", realUser);
+		
+		return "change-user-data";
+	}
+	
+	@PostMapping("/confirmChangeData")
+	public String confirmChangeStatus(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) {
+			return "/change-user-data";
+		}
+		
+		userService.saveChangedData(user);
+		return "redirect:/";
 
 	}
 
