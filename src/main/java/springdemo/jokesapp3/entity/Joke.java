@@ -18,6 +18,9 @@ import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
 @Table(name="jokes")
@@ -26,6 +29,7 @@ public class Joke {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
+	@JsonIgnore
 	private int id;
 	
 	
@@ -34,14 +38,17 @@ public class Joke {
 	private String content;
 	
 	@Column(name="likes")
+	@JsonIgnore
 	private int likes;
 	
 	@Column(name="dislikes")
+	@JsonIgnore
 	private int dislikes;
 	
 	@ManyToOne(cascade= {CascadeType.DETACH, CascadeType.MERGE, 
 			CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name="category_id")
+	@JsonIgnore
 	private Category category;
 
 	public Joke() {
@@ -90,7 +97,7 @@ public class Joke {
 	public void setDislikes(int dislikes) {
 		this.dislikes = dislikes;
 	}
-
+//	@JsonIgnore
 	public Category getCategory() {
 		return category;
 	}
@@ -98,7 +105,7 @@ public class Joke {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	
+	@JsonIgnore
 	public int getDifference() {
 		return Math.abs(likes-dislikes);
 	}

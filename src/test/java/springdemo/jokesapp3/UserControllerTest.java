@@ -68,22 +68,23 @@ public class UserControllerTest {
 	
 	@Test
 	public void listUsersTest() throws Exception {
-//		User user = new User();
-//		List<User> users = new ArrayList<>();
-//		users.add(user);
-//		
-//		Mockito.when(userService.findAll()).thenReturn(users);
-//		String viewName = userController.listUsers(model, 0);
-//		assertEquals("list-users", viewName);
-//		
-//		ArgumentCaptor<List<User>> argumentCaptor = ArgumentCaptor.forClass(List.class);
-//		
-//		Mockito.verify(userService, Mockito.times(1)).findAll();
-//		Mockito.verify(model, Mockito.times(1)).addAttribute(Mockito.eq("users"),  argumentCaptor.capture());
-//		
-//		List<User> users2 = argumentCaptor.getValue();
-//		
-//		assertEquals(1, users2.size());
+		User user = new User();
+		List<User> usersList = new ArrayList<>();
+		usersList.add(user);
+		Page<User> users = new PageImpl<User>(usersList);
+		
+		Mockito.when(userService.findByName("", PageRequest.of(0, 10))).thenReturn(users);
+		String viewName = userController.listUsers(model, 0, "");
+		assertEquals("list-users", viewName);
+		
+		ArgumentCaptor<Page<User>> argumentCaptor = ArgumentCaptor.forClass(Page.class);
+		
+		Mockito.verify(userService, Mockito.times(1)).findByName("", PageRequest.of(0, 10));
+		Mockito.verify(model, Mockito.times(1)).addAttribute(Mockito.eq("users"),  argumentCaptor.capture());
+		
+		Page<User> users2 = argumentCaptor.getValue();
+		
+		assertEquals(1, users2.getNumberOfElements());
 			
 	}
 	

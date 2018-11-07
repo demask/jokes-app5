@@ -19,4 +19,6 @@ public interface JokeDao {
 
 	public void saveJoke(Joke joke);
 
+	public List<Joke> getJokesByCategory(String category);
+
 }

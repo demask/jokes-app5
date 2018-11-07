@@ -86,4 +86,40 @@ public class JokeDAOImpl implements JokeDao {
 		category.addJoke(joke);
 		entityManager.persist(joke);
 	}
+
+	@Override
+	public List<Joke> getJokesByCategory(String category) {
+		TypedQuery<Category> categoryQuery  = entityManager.createQuery("from Category where lower(name) like '%" + category + "%'", Category.class);
+		List<Category> categoryList = categoryQuery.getResultList();
+		Category cat;
+		
+		if (categoryList.size() == 0) {
+			return null;
+		} 
+		cat = categoryList.get(0);
+		TypedQuery<Joke> jokequery = entityManager.createQuery("from Joke where category_id=" + cat.getId(), Joke.class);
+		List<Joke> jokes = jokequery.getResultList();
+		
+		return jokes;
+		
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

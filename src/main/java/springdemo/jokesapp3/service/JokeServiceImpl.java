@@ -1,6 +1,8 @@
 package springdemo.jokesapp3.service;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,11 +54,22 @@ public class JokeServiceImpl implements JokeService {
 	public void deleteJoke(Joke joke) {
 		jokesRepository.delete(joke);
 	}
+	
 	@Override
 	public Joke getOne(int jokeId) {
 		return jokesRepository.getOne(jokeId);
 	}
 
-	
+	@Override
+	public List<Joke> getJokes() {
+		return jokesRepository.findAll();
+	}
+
+	@Override
+	@Transactional
+	public List<Joke> getJokesByCategory(String category) {
+		
+		return jokesDao.getJokesByCategory(category);
+	}
 
 }
