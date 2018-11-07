@@ -2,7 +2,6 @@ package springdemo.jokesapp3.controller;
 
 import java.util.List;
 
-
 import javax.servlet.http.HttpSession;
 import javax.sound.midi.MidiDevice.Info;
 import javax.validation.Valid;
@@ -41,19 +40,20 @@ public class UserController {
 	private RoleService roleService;
 
 	@GetMapping("/listUsers")
-	public String listUsers(Model model,   @RequestParam(defaultValue="0") int page, @RequestParam(defaultValue="")  String findName) {
+	public String listUsers(Model model, @RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "") String findName) {
 
 		Page<User> users = userService.findByName(findName, PageRequest.of(page, 10));
-			model.addAttribute("users", users);
-			model.addAttribute("currentPage", page);
-			model.addAttribute("findName", findName);
-			return "list-users";
+		model.addAttribute("users", users);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("findName", findName);
+		return "list-users";
 
-		
 	}
 
 	@PostMapping("/listUsers/deleteUser")
-	public String deleteUser(Model model, @RequestParam("userEmail") String userEmail, @RequestParam int page, HttpSession session) {
+	public String deleteUser(Model model, @RequestParam("userEmail") String userEmail, @RequestParam int page,
+			HttpSession session) {
 		session.setAttribute("userEmail", userEmail);
 		session.setAttribute("page", page);
 		return "confirmation-dialog";
@@ -63,17 +63,18 @@ public class UserController {
 	@PostMapping("/confirmAction")
 	public String confirmdeleteUser(Model model, @RequestParam("action") String action, HttpSession session) {
 		String userEmail = (String) session.getAttribute("userEmail");
-		
+
 		if (action.equals("yes")) {
 			User user = userService.findOne(userEmail);
 			userService.delete(userEmail);
 		}
-		return "redirect:/listUsers?page="+session.getAttribute("page");
+		return "redirect:/listUsers?page=" + session.getAttribute("page");
 
 	}
 
 	@PostMapping("/listUsers/changeStatus")
-	public String changeUserStatus(Model model, @RequestParam("userEmail") String userEmail, @RequestParam int page, HttpSession session) {
+	public String changeUserStatus(Model model, @RequestParam("userEmail") String userEmail, @RequestParam int page,
+			HttpSession session) {
 		User user = userService.findOne(userEmail);
 		List<Role> roles = roleService.findAll();
 		model.addAttribute("user", user);
@@ -91,28 +92,28 @@ public class UserController {
 			realUser.setRoles(null);
 			realUser.setRoles(user.getRoles());
 		}
-		userService.save(realUser); 
-		return "redirect:/listUsers?page="+session.getAttribute("page");
+		userService.save(realUser);
+		return "redirect:/listUsers?page=" + session.getAttribute("page");
 
 	}
-	
+
 	@GetMapping("/userData")
 	public String changeUserData(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User realUser = userService.findOne(authentication.getName());
-		
+
 		model.addAttribute("user", realUser);
-		
+
 		return "change-user-data";
 	}
-	
+
 	@PostMapping("/confirmChangeData")
 	public String confirmChangeStatus(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
-		
-		if(bindingResult.hasErrors()) {
+
+		if (bindingResult.hasErrors()) {
 			return "/change-user-data";
 		}
-		
+
 		userService.saveChangedData(user);
 		return "redirect:/";
 

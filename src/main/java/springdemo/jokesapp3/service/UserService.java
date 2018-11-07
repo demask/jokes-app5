@@ -82,8 +82,6 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	
-//	trebalo bi biti implementirano u search baru za korisnike
 	public Page<User> findByName(String name, Pageable pageable) {
 		List<User> users = userRepository.findByNameLikeIgnoreCase("%" + name + "%");
 		
