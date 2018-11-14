@@ -15,6 +15,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import springdemo.jokesapp3.entity.Category;
 import springdemo.jokesapp3.entity.Joke;
+import springdemo.jokesapp3.repositories.JokeRepository;
 
 @Slf4j
 @Repository
@@ -29,25 +31,20 @@ public class JokeDAOImpl implements JokeDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	@Autowired
+	private JokeRepository jokeRepository;
 
 	@Override
 	public Page<Joke> getJokes(Pageable pageable) {
 		
-		TypedQuery<Joke> jokequery = entityManager.createQuery("from Joke order by ((likes-dislikes), likes) desc", Joke.class);
-		
+		TypedQuery<Joke> jokequery;
+		jokequery = entityManager.createQuery("from Joke order by ((likes-dislikes), likes) desc", Joke.class)
+				.setFirstResult((pageable.getPageNumber() - 1) * 10).setMaxResults(10);
+
 		List<Joke> jokes = jokequery.getResultList();
-		List<Joke> jokes2; 
-		if(((pageable.getPageNumber()+1)*pageable.getPageSize()) >= jokes.size()) {
-			
-			 jokes2 = jokes.subList((pageable.getPageNumber()*pageable.getPageSize()), jokes.size());
-		}
-		else {	
-			 jokes2 = jokes.subList(pageable.getPageNumber()*pageable.getPageSize(), 
-					 ((pageable.getPageNumber()+1)*pageable.getPageSize()));
-		}
+		Page<Joke> page = new PageImpl<Joke>(jokes, PageRequest.of(pageable.getPageNumber()-1, 10), jokeRepository.count());
 		
-		Page<Joke> page = new PageImpl<Joke>(jokes2, pageable, jokes.size());
-			
 		return page;
 	}
 
@@ -70,9 +67,8 @@ public class JokeDAOImpl implements JokeDao {
 
 	@Override
 	public void saveJoke(Joke joke) {
-		TypedQuery<Category> query = entityManager.
-				createQuery("from Category where lower(name) like '%" + joke.getCategory().getName() + "%'",
-				Category.class);
+		TypedQuery<Category> query = entityManager.createQuery(
+				"from Category where lower(name) like '%" + joke.getCategory().getName() + "%'", Category.class);
 
 		List<Category> listcategory = query.getResultList();
 		Category category;
@@ -89,37 +85,20 @@ public class JokeDAOImpl implements JokeDao {
 
 	@Override
 	public List<Joke> getJokesByCategory(String category) {
-		TypedQuery<Category> categoryQuery  = entityManager.createQuery("from Category where lower(name) like '%" + category + "%'", Category.class);
+		TypedQuery<Category> categoryQuery = entityManager
+				.createQuery("from Category where lower(name) like '%" + category + "%'", Category.class);
 		List<Category> categoryList = categoryQuery.getResultList();
 		Category cat;
-		
+
 		if (categoryList.size() == 0) {
 			return null;
-		} 
+		}
 		cat = categoryList.get(0);
-		TypedQuery<Joke> jokequery = entityManager.createQuery("from Joke where category_id=" + cat.getId(), Joke.class);
+		TypedQuery<Joke> jokequery = entityManager.createQuery("from Joke where category_id=" + cat.getId(),
+				Joke.class);
 		List<Joke> jokes = jokequery.getResultList();
-		
+
 		return jokes;
-		
+
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

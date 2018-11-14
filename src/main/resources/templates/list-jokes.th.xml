@@ -12,7 +12,7 @@
 	<attr sel="#jokes-list" th:each="tempJoke, i : ${jokes}" />
 
 	<attr sel="#jokes-td-page"
-		th:text="${((currentPage) * 10) +  i.index +1}" />
+		th:text="${((currentPage-1) * 10) +  i.index +1}" />
 
 	<attr sel="#jokes-td-name"
 		th:text="${tempJoke.category.getName()}" />
@@ -36,18 +36,18 @@
 		th:href="@{deleteJoke/(jokeId=${tempJoke.id}, page=${currentPage})}" />
 
 	<attr sel=".pageNumbers"
-		th:each="i : ${#numbers.sequence(0, jokes.totalPages-1) }" />
+		th:each="i : ${#numbers.sequence(pager.startPage, pager.endPage) }" />
 
 	<attr sel="#joke-pages" th:href="@{/(page=${i})}" th:text="${i}"
 		th:classappend="${currentPage}==${i}?'active':''" />
-
-	<attr sel="#joke-pages-cond1"
-		th:if="${i == jokes.totalPages-1 and currentPage != i}"
+			
+	<attr sel=".joke-pages-cond1" th:if="${currentPage != 1}"
+		th:href="@{/(page=${currentPage-1})}" th:text="Prethodna" />
+		
+	<attr sel=".joke-pages-cond2" th:if="${jokes.totalPages != currentPage}"
 		th:href="@{/(page=${currentPage+1})}" th:text="Sljedeća" />
-
-	<attr sel="#joke-pages-cond2"
-		th:if="${i == jokes.totalPages-1 and currentPage == i}"
-		th:href="@{/(page=${currentPage})}" th:text="Sljedeća" />
+		
+		
 
 
 

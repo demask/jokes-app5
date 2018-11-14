@@ -132,6 +132,18 @@ td a:hover {
 	padding: 15px 0px 15px 15px;
 }
 
+.pageNumbers2 {
+	
+	display: inline;
+	font-size: 20px;
+}
+
+.pageNumbers2 a{
+	color: white;
+	text-decoration: none;
+	padding: 15px 0px 15px 15px;
+}
+
 .active {
 	color: red;
 	font-weight: bold;
