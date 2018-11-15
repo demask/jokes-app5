@@ -91,18 +91,13 @@ public class UserService {
 	public Page<User> findByName(String name, Pageable pageable) {
 		
 		long numberOfSearchedUsers = userRepository.countByNameIgnoreCaseContaining(name);
-		System.out.println("number of " + numberOfSearchedUsers);
-		
 		long numberOfUsers = userRepository.count();
-		
-
 		TypedQuery<User> userquery;
 		userquery = entityManager.createQuery("from User where lower(name) like '%" + name + "%'", User.class)
 				.setFirstResult((pageable.getPageNumber() - 1) * 10).setMaxResults(10);
 
 		List<User> users = userquery.getResultList();
 		Page<User> page;
-		
 
 		if (numberOfSearchedUsers < numberOfUsers) {
 			page = new PageImpl<User>(users, PageRequest.of(pageable.getPageNumber() - 1, 10), numberOfSearchedUsers);
