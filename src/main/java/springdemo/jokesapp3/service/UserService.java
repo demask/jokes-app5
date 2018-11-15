@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import springdemo.jokesapp3.entity.Joke;
 import springdemo.jokesapp3.entity.Role;
 import springdemo.jokesapp3.entity.User;
 import springdemo.jokesapp3.repositories.UserRepository;
@@ -22,9 +26,12 @@ import springdemo.jokesapp3.repositories.UserRepository;
 @Slf4j
 @Service
 public class UserService {
- 
+
 	@Autowired
 	private UserRepository userRepository;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	public void createUser(User user) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -34,7 +41,6 @@ public class UserService {
 		roles.add(userRole);
 		user.setRoles(roles);
 		userRepository.save(user);
-		
 
 	}
 
@@ -64,7 +70,7 @@ public class UserService {
 	}
 
 	public void delete(String email) {
-		
+
 		userRepository.deleteById(email);
 	}
 
@@ -72,7 +78,7 @@ public class UserService {
 
 		userRepository.save(user);
 	}
-	
+
 	public void saveChangedData(User user) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User realUser = findOne(authentication.getName());
@@ -83,22 +89,29 @@ public class UserService {
 	}
 
 	public Page<User> findByName(String name, Pageable pageable) {
-		List<User> users = userRepository.findByNameLikeIgnoreCase("%" + name + "%");
 		
-		List<User> users2; 
-		if(((pageable.getPageNumber()+1)*pageable.getPageSize()) >= users.size()) {
-			
-			users2 = users.subList((pageable.getPageNumber()*pageable.getPageSize()), users.size());
-		}
-		else {	
-			users2 = users.subList(pageable.getPageNumber()*pageable.getPageSize(), 
-					 ((pageable.getPageNumber()+1)*pageable.getPageSize()));
+		long numberOfSearchedUsers = userRepository.countByNameIgnoreCaseContaining(name);
+		System.out.println("number of " + numberOfSearchedUsers);
+		
+		long numberOfUsers = userRepository.count();
+		
+
+		TypedQuery<User> userquery;
+		userquery = entityManager.createQuery("from User where lower(name) like '%" + name + "%'", User.class)
+				.setFirstResult((pageable.getPageNumber() - 1) * 10).setMaxResults(10);
+
+		List<User> users = userquery.getResultList();
+		Page<User> page;
+		
+
+		if (numberOfSearchedUsers < numberOfUsers) {
+			page = new PageImpl<User>(users, PageRequest.of(pageable.getPageNumber() - 1, 10), numberOfSearchedUsers);
+		} else {
+			page = new PageImpl<User>(users, PageRequest.of(pageable.getPageNumber() - 1, 10), numberOfUsers);
 		}
 		
-		Page<User> page = new PageImpl<User>(users2, pageable, users.size());
-			
 		return page;
-		
+
 	}
 
 	public boolean isUserPresent(String email) {
@@ -108,5 +121,7 @@ public class UserService {
 
 		return false;
 	}
+	
+
 
 }

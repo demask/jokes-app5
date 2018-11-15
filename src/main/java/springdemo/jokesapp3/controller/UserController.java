@@ -3,7 +3,7 @@ package springdemo.jokesapp3.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
-import javax.sound.midi.MidiDevice.Info;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +11,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
-import springdemo.jokesapp3.entity.Joke;
+
+import springdemo.jokesapp3.entity.Pager;
 import springdemo.jokesapp3.entity.Role;
 import springdemo.jokesapp3.entity.User;
-import springdemo.jokesapp3.repositories.RoleRepository;
+
 import springdemo.jokesapp3.service.RoleService;
 import springdemo.jokesapp3.service.UserService;
 
@@ -40,13 +41,17 @@ public class UserController {
 	private RoleService roleService;
 
 	@GetMapping("/listUsers")
-	public String listUsers(Model model, @RequestParam(defaultValue = "0") int page,
+	public String listUsers(Model model, @RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "") String findName) {
 
 		Page<User> users = userService.findByName(findName, PageRequest.of(page, 10));
+		
+		Pager pager = new Pager(users.getTotalPages(), users.getNumber(), 5);
 		model.addAttribute("users", users);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("findName", findName);
+		model.addAttribute("pager", pager);
+		
 		return "list-users";
 
 	}

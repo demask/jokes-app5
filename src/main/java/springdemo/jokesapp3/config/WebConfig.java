@@ -1,19 +1,8 @@
 package springdemo.jokesapp3.config;
 
-import javax.persistence.EntityManagerFactory;
-import javax.servlet.http.HttpServlet;
-import javax.sql.DataSource;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
-import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -26,6 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addViewController("/");
 	}
 
+	
 	
 
 }

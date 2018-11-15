@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import springdemo.jokesapp3.entity.Role;
-import springdemo.jokesapp3.entity.User;
 import springdemo.jokesapp3.repositories.RoleRepository;
 
 @Slf4j
